@@ -94,7 +94,7 @@ app.post('/api/createLink', (req, res, next) => {
 		let note = {
 			id: data.intercom.conversationId,
 			admin_id: data.intercom.adminId,
-			body: 'Linked to JIRA Ticket #' + jira.issue + ': <a href="https://' + jira.url + '" target="_blank">' + data.jira.summary + '</a>',
+			body: `Linked to JIRA <b>#${jira.issue}</b>: <a href="https://${jira.url}" target="_blank">${data.jira.summary}</a>`,
 			type: 'admin',
 			message_type: 'note'
 		};
@@ -106,7 +106,7 @@ app.post('/api/createLink', (req, res, next) => {
 				res.sendStatus(400)
 			}
 			else{
-				console.log(response)
+				console.log(response.body)
 				res.status(201).json('Link created')
 			}
 		});
