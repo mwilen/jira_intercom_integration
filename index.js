@@ -1,14 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const util = require('util')
+const config = require('./config.js').get(process.env.NODE_ENV);
 
-const config = require('./config.js')
-
-JiraApi = require('jira').JiraApi;
+const JiraApi = require('jira').JiraApi;
 const Jira = new JiraApi('https', config.host, config.port, config.user, config.password, config.apiversion);
 
 const IntercomApi = require('intercom-client');
-const Intercom = new IntercomApi.Client({ token: 'dG9rOjRlNjIwMGMxXzgzMWVfNDViMl84OWRlXzE5ZjVhOWM0YWExODoxOjA=' });
+const Intercom = new IntercomApi.Client({ token: config.intercom_token});
+
 
 const app = express()
 
