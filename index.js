@@ -2,9 +2,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const util = require('util')
 
-JiraApi = require('jira').JiraApi;
+const config = require('./config')
 
-const Jira = new JiraApi('https', 'mwilen.atlassian.net', 443, 'mathias.wilen@gmail.com', 'kxcvwq4165', '2');
+JiraApi = require('jira').JiraApi;
+const Jira = new JiraApi('https', config.host, config.port, config.user, config.password, config.apiversion);
+
+const IntercomApi = require('intercom-client');
+const Intercom = new IntercomApi.Client({ token: 'dG9rOjRlNjIwMGMxXzgzMWVfNDViMl84OWRlXzE5ZjVhOWM0YWExODoxOjA=' });
 
 const app = express()
 
@@ -15,12 +19,27 @@ const server = app.listen(3000, function() {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// Jira.findIssue('TEST-1', (error, issue) => {
-// 	if(error)
-// 		console.log('Error:', error)
-// 	else
-// 		console.log('Status: ' + util.inspect(issue.fields, false, null));
-// });
+
+const linkIntercom = (data) => {
+
+	let reply = {
+		id: '9025833924',
+		intercom_user_id: '71741',
+		body: 'Some reply :)',
+		type: 'admin',
+		message_type: 'note'
+	};
+
+	Intercom.conversations.reply(reply, (error, response) => {
+		if(error){
+			console.log(error)
+		}
+		else{
+			console.log(response)
+		}
+	});
+}
+linkIntercom()
 
 app.post('/api/createLink', (req, res, next) => {
 
@@ -44,11 +63,11 @@ app.post('/api/createLink', (req, res, next) => {
 		}
 		else{
 
-			var issueKey = issue.key;
+			let issueKey = issue.key;
 			console.log('Status: ' + util.inspect(issue, false, null));
 			console.log('Issue created')
 
-			var linkData = {
+			let linkData = {
 				"relationship": "causes",
 			    "object": {
 			        "url" : "https://www.youtube.com/watch?v=G26HX51Xx5Q",
@@ -61,8 +80,9 @@ app.post('/api/createLink', (req, res, next) => {
 			};
 
 			Jira.createRemoteLink(issueKey, linkData, (err, link) => {
-				console.log('Status: ' + util.inspect(link, false, null));
+				console.log('Status: ' + util.inspect(issue, false, null))
 				res.status(201).json('Link created')
+				linkIntercom({issue: issue.key, url: config.host + '/browse/' + issue.key})
 			});
 		}
 	})
