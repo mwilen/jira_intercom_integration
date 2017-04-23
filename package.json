@@ -1,0 +1,16 @@
+{
+  "name": "jintercom",
+  "version": "1.0.0",
+  "description": "jira and intercom integration",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index"
+  },
+  "author": "Mathias Wilén",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "jira": "^0.9.2"
+  }
+}
