@@ -20,19 +20,14 @@ const Intercom = new IntercomApi.Client({ token: config.intercom_token});
 
 const app = express()
 
-const server = app.listen(3000, function() {
-    console.log('Express is listening to http://localhost:3000');
-});
+const server = app.listen(3000);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-
 app.post('/api/createLink', (req, res, next) => {
 
 	let data = req.body;
-
-	console.log(data)
 
 	// Sample POST Data
 	// {
@@ -128,5 +123,3 @@ app.post('/api/createLink', (req, res, next) => {
 		});
 	}
 })
-
-console.log('i am running')
