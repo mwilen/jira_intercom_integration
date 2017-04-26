@@ -17,9 +17,7 @@ const Jira = new JiraApi({
 const IntercomApi = require('intercom-client');
 const Intercom = new IntercomApi.Client({ token: config.intercom_token});
 
-
 const app = express()
-
 const server = app.listen(3000);
 
 app.use(bodyParser.json());
@@ -28,6 +26,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.post('/api/createLink', (req, res, next) => {
 
 	let data = req.body;
+	let issueKey = '';
 
 	// Sample POST Data
 	// {
@@ -65,7 +64,9 @@ app.post('/api/createLink', (req, res, next) => {
 		}
 	})
 	.then(issue => {
-		let issueKey = issue.key;
+
+		issueKey = issue.key;
+
 		console.log('Status: ' + util.inspect(issue, false, null));
 		console.log('Issue created')
 
@@ -81,26 +82,14 @@ app.post('/api/createLink', (req, res, next) => {
 		    }
 		};
 
-		Jira.createRemoteLink(issueKey, linkData)
-		.then(link => {
-			console.log('Status: ' + util.inspect(issue, false, null))
-			linkIntercom({issue: issue.key, url: config.host + '/browse/' + issue.key})
-		})
-		.catch(error => {
-			if(error){
-				console.log('Error:', error)
-				res.sendStatus(400)
-			}
-		})
+		return Jira.createRemoteLink(issueKey, linkData)
 	})
-	.catch(error => {
-		if(error){
-			console.log('Error:', error)
-			res.sendStatus(400)
-		}
+	.then(link => {
+		console.log(link, issueKey)
+		console.log('Status: ' + util.inspect(link, false, null))
+		return {issue: issueKey, url: config.host + '/browse/' + issueKey}
 	})
-
-	const linkIntercom = (jira) => {
+	.then(jira => {
 
 		let note = {
 			id: data.intercom.conversationId,
@@ -111,15 +100,16 @@ app.post('/api/createLink', (req, res, next) => {
 		};
 
 		// Create note in Intercom
-		Intercom.conversations.reply(note, (error, response) => {
-			if(error){
-				console.log(error)
-				res.sendStatus(400)
-			}
-			else{
-				console.log(response.body)
-				res.status(201).json('Link created')
-			}
-		});
-	}
+		return Intercom.conversations.reply(note)
+	})
+	.then(intercomNote => {
+		console.log(intercomNote.body)
+		res.status(201).json('Link created')
+	})
+	.catch(error => {
+		if(error){
+			console.log('Error:', error)
+			res.sendStatus(400)
+		}
+	})
 })
