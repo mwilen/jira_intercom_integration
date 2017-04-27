@@ -33,6 +33,7 @@ app.post('/api/createLink', (req, res, next) => {
 	// 	"intercom": {
 	// 		"adminId": 71741,
 	// 		"conversationId": 9025833924,
+	//		"name": "Mathias Wilén"
 	// 		"url": "https://app.intercom.io/a/apps/vc7jxmzv/conversations/9025833924"
 	// 	},
 	// 	"jira": {
@@ -87,14 +88,16 @@ app.post('/api/createLink', (req, res, next) => {
 	.then(link => {
 		console.log(link, issueKey)
 		console.log('Status: ' + util.inspect(link, false, null))
-		return {issue: issueKey, url: config.host + '/browse/' + issueKey}
-	})
-	.then(jira => {
+		let jiraLinkUrl = config.host + '/browse/' + issueKey
 
 		let note = {
 			id: data.intercom.conversationId,
 			admin_id: data.intercom.adminId,
-			body: `Linked to JIRA <b>#${jira.issue}</b>: <a href="https://${jira.url}" target="_blank">${data.jira.summary}</a>`,
+			body: `Linked to <a href="https://${jiraLinkUrl}" target="_blank">JIRA</a> #${issueKey}: <a href="https://${jiraLinkUrl}" target="_blank"><b>${data.jira.summary}</b></a>
+			<b>Priority:</b> ${data.jira.priority}
+			<b>Type:</b> ${data.jira.type}
+			<b>Description:</b> ${data.jira.description}
+			<br>Opened by ${data.intercom.name}`,
 			type: 'admin',
 			message_type: 'note'
 		};
