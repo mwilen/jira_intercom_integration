@@ -1,7 +1,8 @@
+require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
 const util = require('util')
-const config = require('./config.js').get(process.env.NODE_ENV);
+const config = require('./config.js');
 
 const JiraApi = require('jira-client');
 const Jira = new JiraApi({
@@ -28,24 +29,6 @@ app.post('/api/createLink', (req, res, next) => {
 	let data = req.body;
 	let issueKey = '';
 
-	// Sample POST Data
-	// {
-	// 	"intercom": {
-	// 		"adminId": 71741,
-	// 		"conversationId": 9025833924,
-	//		"name": "Mathias Wilén"
-	// 		"url": "https://app.intercom.io/a/apps/vc7jxmzv/conversations/9025833924"
-	// 	},
-	// 	"jira": {
-	// 		"username": "admin",
-	// 		"project": "TEST",
-	// 		"type": "Bug",
-	// 		"priority": "Low",
-	// 		"summary": "This is not working properly",
-	// 		"description": "This is not working properly because this bug causes app to crash"
-	// 	}
-	// }
-
 	Jira.addNewIssue({
 		fields: {
 			project: {
@@ -67,8 +50,6 @@ app.post('/api/createLink', (req, res, next) => {
 	.then(issue => {
 
 		issueKey = issue.key;
-
-		console.log('Status: ' + util.inspect(issue, false, null));
 		console.log('Issue created')
 
 		let linkData = {
@@ -86,8 +67,6 @@ app.post('/api/createLink', (req, res, next) => {
 		return Jira.createRemoteLink(issueKey, linkData)
 	})
 	.then(link => {
-		console.log(link, issueKey)
-		console.log('Status: ' + util.inspect(link, false, null))
 		let jiraLinkUrl = config.host + '/browse/' + issueKey
 
 		let note = {
@@ -106,12 +85,12 @@ app.post('/api/createLink', (req, res, next) => {
 		return Intercom.conversations.reply(note)
 	})
 	.then(intercomNote => {
-		console.log(intercomNote.body)
+		console.log('Issue linked')
 		res.status(201).json('Link created')
 	})
 	.catch(error => {
 		if(error){
-			console.log('Error:', error)
+			console.error('Error:', error)
 			res.sendStatus(400)
 		}
 	})
