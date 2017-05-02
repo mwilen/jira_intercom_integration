@@ -4,7 +4,8 @@
   "description": "jira and intercom integration",
   "main": "index.js",
   "scripts": {
-    "test": "node index"
+    "test": "node index",
+	"start": "node index"
   },
   "author": "Mathias Wilén",
   "license": "MIT",
