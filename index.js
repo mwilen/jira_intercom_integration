@@ -18,7 +18,7 @@ const IntercomApi = require('intercom-client');
 const Intercom = new IntercomApi.Client({ token: config.intercom_token});
 
 const app = express()
-const server = app.listen(3000);
+const server = app.listen(process.env.PORT || 3000);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
