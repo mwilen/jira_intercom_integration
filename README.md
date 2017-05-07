@@ -1,5 +1,5 @@
 # Jira and Intercom integration
-A small app that works as an API for the Jira integration with Intercom extension.
+A small app that works as an API for the [Jira integration with Intercom extension](https://chrome.google.com/webstore/detail/jira-integration-with-int/eghmlkojhdkdcipgnnfipggpaddinegg).
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/mwilen/jira_intercom_integration)
 
