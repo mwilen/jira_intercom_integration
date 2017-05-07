@@ -1,6 +1,20 @@
 {
-  "name": "Jira + Intercom integration",
-  "description": "Small barebone app that works as an API for Jira integration with Intercom",
-  "repository": "https://github.com/mwilen/jira_intercom_integration",
-  "keywords": ["node", "express", "jira", "intercom"]
+	"name": "Jira + Intercom integration",
+	"description": "Small barebone app that works as an API for Jira integration with Intercom",
+	"repository": "https://github.com/mwilen/jira_intercom_integration",
+	"keywords": ["node", "express", "jira", "intercom"],
+	"env": {
+		"JIRA_HOSTNAME": {
+			"description": "Hostname of your JIRA, e.g: domain.atlassian.net"
+		},
+		"JIRA_USER": {
+			"description": "The User you're logging into JIRA with."
+		},
+		"JIRA_PASSWORD": {
+			"description": "The Password you're logging into JIRA with."
+		},
+		"INTERCOM_ACCESS_TOKEN": {
+			"description": "Access token for API usage on your Intercom account."
+		}
+	}
 }
