@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
 const util = require('util')
+const cors = require('cors')
 const config = require('./config.js');
 
 const JiraApi = require('jira-client');
@@ -24,7 +25,12 @@ const server = app.listen(process.env.PORT || 3000);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.post('/api/createLink', (req, res, next) => {
+var corsOptions = {
+	origin: '*chrome-extension*',
+	optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
+app.post('/api/createLink', cors(), (req, res, next) => {
 
 	let data = req.body;
 	let issueKey = '';
