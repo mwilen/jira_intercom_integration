@@ -32,8 +32,15 @@ app.get('/', (req, res, next) => {
 
 app.post('/api/createLink', (req, res, next) => {
 
-	let data = req.body;
 	let issueKey = '';
+	let data;
+	if(req.body.jira)
+		data = req.body;
+	else{
+		// Super ugly workaround because intercom blocks requests when headers are set
+		for(i in req.body)
+			data = JSON.parse(i)
+	}
 
 	Jira.addNewIssue({
 		fields: {
@@ -76,8 +83,8 @@ app.post('/api/createLink', (req, res, next) => {
 		let jiraLinkUrl = config.host + '/browse/' + issueKey
 
 		let note = {
-			id: data.intercom.conversationId,
-			admin_id: data.intercom.adminId,
+			id: data.intercom.conversation_id,
+			admin_id: data.intercom.admin_id,
 			body: `Linked to <a href="https://${jiraLinkUrl}" target="_blank">JIRA</a> #${issueKey}: <a href="https://${jiraLinkUrl}" target="_blank"><b>${data.jira.summary}</b></a>
 			<b>Priority:</b> ${data.jira.priority}
 			<b>Type:</b> ${data.jira.type}
