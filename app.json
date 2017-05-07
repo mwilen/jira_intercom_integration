@@ -1,0 +1,6 @@
+{
+  "name": "Jira + Intercom integration",
+  "description": "Small barebone app that works as an API for Jira integration with Intercom",
+  "repository": "https://github.com/mwilen/jira_intercom_integration",
+  "keywords": ["node", "express", "jira", "intercom"]
+}
