@@ -24,13 +24,13 @@ const server = app.listen(process.env.PORT || 3000);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors())
 
-var corsOptions = {
-	origin: '*chrome-extension*',
-	optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-}
+app.get('/', (req, res, next) => {
+	res.json('Jira + Intercom Integration')
+})
 
-app.post('/api/createLink', cors(corsOptions), (req, res, next) => {
+app.post('/api/createLink', (req, res, next) => {
 
 	let data = req.body;
 	let issueKey = '';
