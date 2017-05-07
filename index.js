@@ -104,6 +104,10 @@ app.post('/api/createLink', (req, res, next) => {
 	.catch(error => {
 		if(error){
 			console.error('Error:', error)
+			// If an error occurs, make sure to clean up JIRA issue if it was created
+			if(issueKey){
+				Jira.deleteIssue(issueKey);
+			}
 			res.sendStatus(400)
 		}
 	})
