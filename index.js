@@ -30,7 +30,7 @@ var corsOptions = {
 	optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
-app.post('/api/createLink', cors(), (req, res, next) => {
+app.post('/api/createLink', cors(corsOptions), (req, res, next) => {
 
 	let data = req.body;
 	let issueKey = '';
