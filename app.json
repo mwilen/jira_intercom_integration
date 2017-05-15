@@ -7,14 +7,11 @@
 		"JIRA_HOSTNAME": {
 			"description": "Hostname of your JIRA, e.g: domain.atlassian.net"
 		},
-		"JIRA_USER": {
-			"description": "The User you're logging into JIRA with."
-		},
-		"JIRA_PASSWORD": {
-			"description": "The Password you're logging into JIRA with."
+		"JIRA_BASICAUTH": {
+			"description": "Base64 version of your JIRA username and password (username:password)"
 		},
 		"INTERCOM_ACCESS_TOKEN": {
-			"description": "Access token for API usage on your Intercom account."
+			"description": "Access token for API usage on your Intercom account"
 		}
 	}
 }

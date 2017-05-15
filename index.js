@@ -5,13 +5,18 @@ const util = require('util')
 const cors = require('cors')
 const config = require('./config.js');
 
+let jiraAuth = Buffer.from(config.jira_basicauth, 'base64').toString('ascii');
+
+let jira_username = jiraAuth.split(':')[0]
+let jira_password = jiraAuth.split(':')[1]
+
 const JiraApi = require('jira-client');
 const Jira = new JiraApi({
 	protocol: 'https',
 	host: config.host,
 	port: config.port,
-	username: config.user,
-	password: config.password,
+	username: jira_username,
+	password: jira_password,
 	apiVersion: '2',
 	strictSSL: true
 });

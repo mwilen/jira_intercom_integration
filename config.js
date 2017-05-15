@@ -1,8 +1,7 @@
 const config = {
 	host: process.env.JIRA_HOSTNAME,
 	port: 443,
-	user: process.env.JIRA_USER,
-	password: process.env.JIRA_PASSWORD,
+	jira_basicauth: process.env.JIRA_BASICAUTH,
 	intercom_token: process.env.INTERCOM_ACCESS_TOKEN
 }
 
