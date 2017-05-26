@@ -39,6 +39,7 @@ app.post('/api/createLink', (req, res, next) => {
 
 	let issueKey = '';
 	let data;
+
 	if(req.body.jira)
 		data = req.body;
 	else{
@@ -46,6 +47,11 @@ app.post('/api/createLink', (req, res, next) => {
 		for(i in req.body)
 			data = JSON.parse(i)
 	}
+
+	data.jira.summary = data.jira.summary.replace(/\;ampersand\;/g,'&')
+	data.jira.description = data.jira.description.replace(/\;ampersand\;/g,'&')
+
+	console.log(data.jira)
 
 	Jira.addNewIssue({
 		fields: {
